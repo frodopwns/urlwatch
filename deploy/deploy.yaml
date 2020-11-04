@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: urlwatch
+    app.kubernetes.io/name: urlwatch
+    app.kubernetes.io/version: 1.16.0
+  name: urlwatch
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: urlwatch
+      app.kubernetes.io/name: urlwatch
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: urlwatch
+        app.kubernetes.io/name: urlwatch
+    spec:
+      containers:
+      - args:
+        - start
+        - --url
+        - https://httpstat.us/503
+        - --url
+        - https://httpstat.us/200
+        image: docker.io/frodopwns/watchurl:1
+        imagePullPolicy: IfNotPresent
+        name: urlwatch
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+
+      terminationGracePeriodSeconds: 30
