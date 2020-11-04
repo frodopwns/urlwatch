@@ -34,16 +34,6 @@ var (
 		},
 		[]string{"url"},
 	)
-
-	// // unused histogram which could be an alternative way to display the responsetimes
-	// responseTimes = prometheus.NewHistogramVec(
-	// 	prometheus.HistogramOpts{
-	// 		Name:    "sample_external_url_responses_ms",
-	// 		Help:    "The response time for a GET to the url.",
-	// 		Buckets: prometheus.LinearBuckets(100, 500, 100),
-	// 	},
-	// 	[]string{"url"},
-	// )
 )
 
 // WatcherManager handles multiple wathcer services allowing them to be run concurrently
@@ -89,7 +79,6 @@ func (wm *WatcherManager) AddWatcher(ctx context.Context, url string) error {
 		wm.Metrics,
 	))
 
-	//@todo return an error if the url was already there?
 	return nil
 }
 
