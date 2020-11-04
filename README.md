@@ -15,6 +15,10 @@ Flags:
 
 ```
 
+## How it works
+
+![Architecture Diagram](./images/arch_diagram.png)
+
 ## Run locally
 
 ```
