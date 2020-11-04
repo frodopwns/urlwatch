@@ -8,10 +8,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var urls []string
-var interval string
-var timeout string
-var port int
+var (
+	urls     []string
+	interval string
+	timeout  string
+	port     int
+)
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
