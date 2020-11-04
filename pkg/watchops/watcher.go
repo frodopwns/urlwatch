@@ -3,7 +3,6 @@ package watchops
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptrace"
@@ -93,11 +92,9 @@ func (w *Watcher) CheckURL(pctx context.Context) (*CheckResult, error) {
 	// send request
 	res, err := http.DefaultTransport.RoundTrip(req)
 	if err != nil {
-		if fmt.Sprintf("%T", err) == "context.deadlineExceededError" {
-			log.Println(w.URL, "check exceeded timeout duration")
-			return &CheckResult{URL: w.URL}, nil
-		}
-		return nil, err
+		log.Println(w.URL, "error during check:", err)
+		// errors here results in site being considered down and response time 0
+		return &CheckResult{URL: w.URL}, nil
 	}
 
 	return &CheckResult{
@@ -128,7 +125,6 @@ func (w *Watcher) Run(pctx context.Context) error {
 			log.Println("checking url: ", w.URL)
 			cres, err := w.CheckURL(ctx)
 			if err != nil {
-				//@todo handle errs that might occur so we don't exit
 				return err
 			}
 
