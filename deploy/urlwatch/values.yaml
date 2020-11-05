@@ -2,6 +2,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+
+urlwatch:
+  urls:
+    - "https://httpstat.us/503"
+    - "https://httpstat.us/200"
+
+  pollInterval: 30s
+  pollTimeout: 2s
+
 replicaCount: 1
 
 image:

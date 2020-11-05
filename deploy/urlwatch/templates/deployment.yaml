@@ -34,10 +34,16 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: 
             - "start"
+            {{- range .Values.urlwatch.urls }}
             - "--url"
-            - "https://httpstat.us/503"
-            - "--url"
-            - "https://httpstat.us/200"
+            - {{ . | quote }}
+            {{- end }}
+            - "-i"
+            - {{ .Values.urlwatch.pollInterval }}
+            - "-t"
+            - {{ .Values.urlwatch.pollTimeout }}
+            - "-p"
+            - {{ .Values.service.port | quote }}
           ports:
             - name: http
               containerPort: 80
