@@ -25,14 +25,8 @@ func TestClientTimeout(t *testing.T) {
 	watcher := NewWatcher(ts.URL, interval, timeout, wg, metrics)
 
 	res, err := watcher.CheckURL(context.Background())
-	if err != nil {
-		t.Error("Request error", err)
-		return
-	}
-
-	if res.Code != 0 {
-		t.Errorf("response code should be 0 in case of timeouts: %d", res.Code)
-	}
+	assert.NoError(t, err, "should be no error querying test server")
+	assert.Equal(t, res.Code, 0, "response code should be 0 when request times out")
 
 }
 
@@ -51,18 +45,13 @@ func TestClientCheckURL(t *testing.T) {
 	watcher := NewWatcher(ts.URL, interval, timeout, wg, metrics)
 
 	res, err := watcher.CheckURL(context.Background())
-	if err != nil {
-		t.Error("Request error", err)
-		return
-	}
+	assert.NoError(t, err, "should be no error querying test server")
 
 	if res.Duration < (100 * time.Millisecond) {
 		t.Errorf("duration metric incorrect, should be greater than 100 miliseconds: %v", res.Duration)
 	}
 
-	if res.Code != http.StatusBadGateway {
-		t.Errorf("response code should be %d: %d", http.StatusBadGateway, res.Code)
-	}
+	assert.Equal(t, res.Code, http.StatusBadGateway, "incorrect response code")
 
 }
 
