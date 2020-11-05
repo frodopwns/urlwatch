@@ -19,6 +19,14 @@ Flags:
 
 ![Architecture Diagram](./images/arch_diagram.png)
 
+This service monitors urls by instantiating a Watcher goroutine for each url provided at runtime.
+A go time.Ticker is used to inform the Watcher when it needs to perform its duty. At that time each Watcher sends a GET request to its url.
+If the response code is 200 and the response time is less than the timeout the url is considered up. Any error that occurs during the request will cause a code of 0 and a response time of 0.
+
+Along with the Watchers, watchurl also instantiates a prometheus server and a metrics catcher service. The Metrics Catcher shares a channel with the Watchers so it can receive the results of url checks. Once received, the metrics catcher sends the metric data to the prometheus client to be served via the /metrics endpoint later.
+
+Last but not least, a final thread is spun off to listen for OS signals like ctrl+c from the user. When this occurs the signal listener uses channels to the other concurrent processes to signal them to stop so the watcherurl application can cleanly exit.
+
 ## Run locally
 
 ```
