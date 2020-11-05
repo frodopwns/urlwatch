@@ -46,7 +46,10 @@ var startCmd = &cobra.Command{
 		}
 
 		// start watching urls and serving metrics
-		watcherman.WaitAndWatch(ctx)
+		err = watcherman.WaitAndWatch(ctx)
+		if err != nil {
+			log.Fatal("error encountered while running watcher manager services", err)
+		}
 	},
 }
 
