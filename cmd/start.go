@@ -29,7 +29,7 @@ var startCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("starting watcher service")
+		log.Println("starting watcher service")
 		ctx := cmd.Context()
 
 		// initialize wanter manager service to track concurrent watcher services
@@ -38,9 +38,9 @@ var startCmd = &cobra.Command{
 			log.Fatalf("failed creating watcher manager: %v", err)
 		}
 
-		fmt.Println("watching urls:")
+		log.Println("watching urls:")
 		for _, u := range urls {
-			fmt.Println(u)
+			log.Println(u)
 			// register each url with the manager
 			watcherman.AddWatcher(ctx, u)
 		}
